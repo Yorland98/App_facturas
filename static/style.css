@@ -1,0 +1,659 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Auth Screen */
+.auth-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-logo h1 {
+    color: #2563eb;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-logo p {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+}
+
+.btn-google {
+    background: white;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-google:hover {
+    background: #f9fafb;
+}
+
+.auth-toggle {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.auth-toggle a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Main App */
+.app-screen {
+    display: none;
+}
+
+.app-header {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.user-welcome {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.logout-btn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* Navigation */
+.nav-tabs {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+}
+
+.nav-tab {
+    flex: 1;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #6b7280;
+    transition: all 0.3s;
+}
+
+.nav-tab.active {
+    color: #2563eb;
+    border-bottom: 2px solid #2563eb;
+    background: #eff6ff;
+}
+
+.nav-tab:hover {
+    background: #f9fafb;
+}
+
+/* Content */
+.tab-content {
+    display: none;
+    padding: 1.5rem;
+    min-height: calc(100vh - 140px);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Dashboard */
+.dashboard-summary {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #0ea5e9;
+}
+
+.balance-card {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.balance-amount {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0ea5e9;
+    margin: 0.5rem 0;
+}
+
+.balance-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+}
+
+.stat-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.stat-amount.income { color: #10b981; }
+.stat-amount.expense { color: #ef4444; }
+.stat-amount.savings { color: #f59e0b; }
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.quick-action {
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+
+.quick-action:hover {
+    border-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.quick-action .icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.quick-action.income .icon { color: #10b981; }
+.quick-action.expense .icon { color: #ef4444; }
+.quick-action.savings .icon { color: #f59e0b; }
+.quick-action.commitment .icon { color: #8b5cf6; }
+
+/* Forms */
+.form-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e5e7eb;
+}
+
+.form-card h3 {
+    margin-bottom: 1rem;
+    color: #374151;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.btn-purple {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+}
+
+/* New Category Styles */
+.category-input-container {
+    display: none;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.category-input-container.show {
+    display: flex;
+}
+
+.category-input-container input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 2px solid #2563eb;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-small.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-small.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+/* Lists */
+.transaction-list {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 1rem;
+    border: 2px solid #e5e7eb;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-info h4 {
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.transaction-date {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.transaction-amount {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.transaction-amount.income { color: #10b981; }
+.transaction-amount.expense { color: #ef4444; }
+.transaction-amount.savings { color: #f59e0b; }
+
+/* Calendar */
+.calendar-container {
+    background: white;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e5e7eb;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-nav {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #2563eb;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.calendar-nav:hover {
+    background: #eff6ff;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 1rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    position: relative;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background: #eff6ff;
+}
+
+.calendar-day.today {
+    background: #2563eb;
+    color: white;
+}
+
+.calendar-day.has-expense {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.calendar-day.selected {
+    background: #10b981;
+    color: white;
+}
+
+.day-header {
+    font-weight: bold;
+    color: #6b7280;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* Commitments */
+.commitments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.commitment-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.commitment-card:hover {
+    border-color: #8b5cf6;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.commitment-card .icon {
+    font-size: 2rem;
+    color: #8b5cf6;
+    margin-bottom: 0.5rem;
+}
+
+.commitment-card h4 {
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.commitment-total {
+    font-weight: bold;
+    color: #ef4444;
+    font-size: 1.1rem;
+}
+
+.add-commitment {
+    border: 2px dashed #d1d5db;
+    background: #f9fafb;
+    color: #6b7280;
+}
+
+.add-commitment:hover {
+    border-color: #8b5cf6;
+    color: #8b5cf6;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+/* Reports */
+.report-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e5e7eb;
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.month-nav {
+    background: #eff6ff;
+    border: 1px solid #2563eb;
+    color: #2563eb;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+    }
+    
+    .summary-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .commitments-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .nav-tab {
+        font-size: 0.8rem;
+        padding: 0.75rem 0.25rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .commitments-grid {
+        grid-template-columns: 1fr;
+    }
+}

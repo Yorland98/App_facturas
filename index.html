@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanzApp - Control de Finanzas Personales</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Auth Screen -->
+        <div id="authScreen" class="auth-screen">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <h1>💰 FinanzApp</h1>
+                    <p>Tu control financiero personal</p>
+                </div>
+                
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="loginEmail" placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-primary" onclick="login()">Iniciar Sesión</button>
+                    <button class="btn btn-google" onclick="loginWithGoogle()">
+                        <span>🔍</span> Continuar con Google
+                    </button>
+                    <div class="auth-toggle">
+                        <p>¿No tienes cuenta? <a href="#" onclick="toggleAuthMode()">Regístrate</a></p>
+                    </div>
+                </div>
+                
+                <div id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label>Nombre completo</label>
+                        <input type="text" id="registerName" placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="registerEmail" placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="registerPassword" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-primary" onclick="register()">Crear Cuenta</button>
+                    <button class="btn btn-google" onclick="loginWithGoogle()">
+                        <span>🔍</span> Continuar con Google
+                    </button>
+                    <div class="auth-toggle">
+                        <p>¿Ya tienes cuenta? <a href="#" onclick="toggleAuthMode()">Inicia sesión</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main App Screen -->
+        <div id="appScreen" class="app-screen">
+            <div class="app-header">
+                <h2 id="appTitle">Dashboard</h2>
+                <p class="user-welcome">Bienvenido, <span id="userName">Usuario</span></p>
+                <button class="logout-btn" onclick="logout()">Salir</button>
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+                <button class="nav-tab" onclick="switchTab('transactions')">💳 Movimientos</button>
+                <button class="nav-tab" onclick="switchTab('calendar')">📅 Calendario</button>
+                <button class="nav-tab" onclick="switchTab('commitments')">📋 Compromisos</button>
+                <button class="nav-tab" onclick="switchTab('reports')">📈 Reportes</button>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="dashboardTab" class="tab-content active">
+                <div class="dashboard-summary">
+                    <div class="balance-card">
+                        <p class="balance-label">Balance Disponible</p>
+                        <div class="balance-amount" id="currentBalance">$0</div>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-amount income" id="totalIncome">$0</div>
+                            <div class="stat-label">Ingresos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-amount expense" id="totalExpenses">$0</div>
+                            <div class="stat-label">Gastos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-amount savings" id="totalSavings">$0</div>
+                            <div class="stat-label">Ahorros</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-action income" onclick="showAddIncomeModal()">
+                        <div class="icon">💰</div>
+                        <div>Agregar Ingreso</div>
+                    </div>
+                    <div class="quick-action expense" onclick="showAddExpenseModal()">
+                        <div class="icon">💸</div>
+                        <div>Registrar Gasto</div>
+                    </div>
+                    <div class="quick-action savings" onclick="showAddSavingsModal()">
+                        <div class="icon">🏦</div>
+                        <div>Establecer Ahorro</div>
+                    </div>
+                    <div class="quick-action commitment" onclick="switchTab('commitments')">
+                        <div class="icon">📋</div>
+                        <div>Ver Compromisos</div>
+                    </div>
+                </div>
+                
+                <div class="transaction-list" id="recentTransactions">
+                    <div style="padding: 1rem; text-align: center; color: #6b7280;">
+                        <p>No hay transacciones recientes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Tab -->
+            <div id="transactionsTab" class="tab-content">
+                <div class="form-card">
+                    <h3>Registrar Nueva Transacción</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <select id="transactionType">
+                                <option value="income">Ingreso</option>
+                                <option value="expense">Gasto</option>
+                                <option value="savings">Ahorro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Monto</label>
+                            <input type="number" id="transactionAmount" placeholder="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input type="text" id="transactionDescription" placeholder="Descripción de la transacción">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="transactionCategory" onchange="toggleNewCategoryInput('transactionCategory', 'newCategoryContainer')">
+                            <!-- Categories will be populated dynamically -->
+                        </select>
+                        <div id="newCategoryContainer" class="category-input-container">
+                            <input type="text" id="newTransactionCategory" placeholder="Nombre de la nueva categoría">
+                            <button type="button" class="btn-small btn-success" onclick="addNewCategory('transactionCategory', 'newTransactionCategory', 'newCategoryContainer')">✓</button>
+                            <button type="button" class="btn-small btn-secondary" onclick="cancelNewCategory('transactionCategory', 'newCategoryContainer')">✕</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="addTransaction()">Agregar Transacción</button>
+                </div>
+                
+                <div class="transaction-list" id="allTransactions">
+                    <div style="padding: 1rem; text-align: center; color: #6b7280;">
+                        <p>No hay transacciones registradas</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calendar Tab -->
+            <div id="calendarTab" class="tab-content">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" onclick="changeMonth(-1)">‹</button>
+                        <h3 id="currentMonth">Enero 2024</h3>
+                        <button class="calendar-nav" onclick="changeMonth(1)">›</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div id="dayDetails" class="transaction-list" style="display: none;">
+                    <div style="padding: 1rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+                        <h4 id="selectedDate">Transacciones del día</h4>
+                    </div>
+                    <div id="dayTransactions">
+                        <!-- Day transactions will be shown here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Commitments Tab -->
+            <div id="commitmentsTab" class="tab-content">
+                <div class="form-card">
+                    <h3>Crear Nuevo Compromiso</h3>
+                    <div class="form-group">
+                        <label>Nombre del compromiso</label>
+                        <input type="text" id="commitmentName" placeholder="Ej: Renta, Mercado, Servicios">
+                    </div>
+                    <button class="btn btn-purple" onclick="addCommitment()">Crear Compromiso</button>
+                </div>
+                
+                <div class="commitments-grid" id="commitmentsGrid">
+                    <div class="commitment-card add-commitment" onclick="document.getElementById('commitmentName').focus()">
+                        <div class="icon">➕</div>
+                        <div>Agregar Compromiso</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="tab-content">
+                <div class="report-card">
+                    <div class="month-selector">
+                        <button class="month-nav" onclick="changeReportMonth(-1)">‹</button>
+                        <h3 id="reportMonth">Enero 2024</h3>
+                        <button class="month-nav" onclick="changeReportMonth(1)">›</button>
+                    </div>
+                    
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-amount income" id="reportIncome">$0</div>
+                            <div class="stat-label">Ingresos del mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-amount expense" id="reportExpenses">$0</div>
+                            <div class="stat-label">Gastos del mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-amount savings" id="reportSavings">$0</div>
+                            <div class="stat-label">Ahorros del mes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <h3>Gastos por Categoría</h3>
+                    <div id="categoryBreakdown">
+                        <!-- Category breakdown will be shown here -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="exportToPDF()">📄 Exportar PDF</button>
+                    <button class="btn btn-success" style="flex: 1;" onclick="exportToExcel()">📊 Exportar Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="incomeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agregar Ingreso</h3>
+                <button class="modal-close" onclick="closeModal('incomeModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Monto</label>
+                <input type="number" id="incomeAmount" placeholder="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" id="incomeDescription" placeholder="Descripción del ingreso">
+            </div>
+            <div class="form-group">
+                <label>Frecuencia</label>
+                <select id="incomeFrequency">
+                    <option value="unico">Único</option>
+                    <option value="semanal">Semanal</option>
+                    <option value="mensual">Mensual</option>
+                </select>
+            </div>
+            <button class="btn btn-success" onclick="addIncome()">Agregar Ingreso</button>
+        </div>
+    </div>
+    
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Gasto</h3>
+                <button class="modal-close" onclick="closeModal('expenseModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Monto</label>
+                <input type="number" id="expenseAmount" placeholder="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" id="expenseDescription" placeholder="Descripción del gasto">
+            </div>
+            <div class="form-group">
+                <label>Categoría</label>
+                <select id="expenseCategory" onchange="toggleNewCategoryInput('expenseCategory', 'newExpenseCategoryContainer')">
+                    <!-- Categories will be populated dynamically -->
+                </select>
+                <div id="newExpenseCategoryContainer" class="category-input-container">
+                    <input type="text" id="newExpenseCategory" placeholder="Nombre de la nueva categoría">
+                    <button type="button" class="btn-small btn-success" onclick="addNewCategory('expenseCategory', 'newExpenseCategory', 'newExpenseCategoryContainer')">✓</button>
+                    <button type="button" class="btn-small btn-secondary" onclick="cancelNewCategory('expenseCategory', 'newExpenseCategoryContainer')">✕</button>
+                </div>
+            </div>
+            <button class="btn btn-danger" onclick="addExpense()">Registrar Gasto</button>
+        </div>
+    </div>
+    
+    <div id="savingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Establecer Ahorro</h3>
+                <button class="modal-close" onclick="closeModal('savingsModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Monto a ahorrar</label>
+                <input type="number" id="savingsAmount" placeholder="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Meta de ahorro</label>
+                <input type="text" id="savingsGoal" placeholder="Para qué estás ahorrando">
+            </div>
+            <button class="btn btn-warning" onclick="addSavings()">Establecer Ahorro</button>
+        </div>
+    </div>
+    
+    <div id="commitmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="commitmentModalTitle">Agregar Gasto - Compromiso</h3>
+                <button class="modal-close" onclick="closeModal('commitmentModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Monto</label>
+                <input type="number" id="commitmentAmount" placeholder="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" id="commitmentDescription" placeholder="Descripción del gasto">
+            </div>
+            <button class="btn btn-purple" onclick="addCommitmentExpense()">Agregar Gasto</button>
+        </div>
+    </div>
+
+    <script src="static/main.js"></script>
+</body>
+</html>
